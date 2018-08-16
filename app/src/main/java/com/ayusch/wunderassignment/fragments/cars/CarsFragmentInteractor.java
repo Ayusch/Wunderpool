@@ -1,10 +1,12 @@
 package com.ayusch.wunderassignment.fragments.cars;
 
+import android.Manifest;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ayusch.wunderassignment.R;
 import com.ayusch.wunderassignment.callbacks.Callback;
@@ -33,20 +35,26 @@ public class CarsFragmentInteractor implements CarsFragmentContract.Interactor {
         if (Nammu.checkPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE))
             mPresenter.writePermissionGrantedP();
         else {
-            Nammu.askForPermission(activity, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionCallback() {
-                @Override
-                public void permissionGranted() {
-                    mPresenter.writePermissionGrantedP();
-                }
-
-                @Override
-                public void permissionRefused() {
-                    mPresenter.writePermissionDeniedP();
-                }
-            });
+            if (!Nammu.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                Nammu.askForPermission(activity, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, permissionCallback);
+            else {
+                Toast.makeText(activity, "Please grant write permission so we can serve you better !!", Toast.LENGTH_LONG).show();
+                Nammu.askForPermission(activity, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, permissionCallback);
+            }
         }
     }
 
+    PermissionCallback permissionCallback = new PermissionCallback() {
+        @Override
+        public void permissionGranted() {
+            mPresenter.writePermissionGrantedP();
+        }
+
+        @Override
+        public void permissionRefused() {
+            mPresenter.writePermissionDeniedP();
+        }
+    };
 
     @Override
     public void loadCarsI(boolean shouldSaveData) {
@@ -56,7 +64,6 @@ public class CarsFragmentInteractor implements CarsFragmentContract.Interactor {
             public void returnResult(CarsInfoResponse carsInfoResponse) {
                 mPresenter.hideDialogP();
                 mPresenter.showCarsInfoP(carsInfoResponse);
-
             }
 
             @Override

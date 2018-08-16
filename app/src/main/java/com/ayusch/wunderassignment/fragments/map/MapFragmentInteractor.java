@@ -97,8 +97,14 @@ public class MapFragmentInteractor implements MapFragmentContract.Interactor, Go
     public void askLocationPermissionI(Activity activity) {
         if (Nammu.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
             mPresenter.locationPermissionGrantedP();
-        else
-            Nammu.askForPermission(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, permissionCallback);
+        else {
+            if (!Nammu.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION))
+                Nammu.askForPermission(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, permissionCallback);
+            else {
+                Toast.makeText(activity, "Please grant location permission so we can serve you better !!", Toast.LENGTH_LONG).show();
+                Nammu.askForPermission(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, permissionCallback);
+            }
+        }
     }
 
     PermissionCallback permissionCallback = new PermissionCallback() {
@@ -167,7 +173,7 @@ public class MapFragmentInteractor implements MapFragmentContract.Interactor, Go
             @Override
             public View getInfoContents(Marker marker) {
                 View view = activity.getLayoutInflater()
-                        .inflate(R.layout.car_info_inner, null);
+                        .inflate(R.layout.custom_info_window, null);
                 CarsInfoResponse.PlaceMarks placeMarks = (CarsInfoResponse.PlaceMarks) marker.getTag();
 
                 TextView address = view.findViewById(R.id.car_address);
@@ -235,8 +241,8 @@ public class MapFragmentInteractor implements MapFragmentContract.Interactor, Go
         boolean isNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         Location location = null;
-        if (!(isGPSEnabled || isNetworkEnabled))
-            Toast.makeText(activity, "No Network Connection", Toast.LENGTH_LONG).show();
+        if (!isGPSEnabled && !isNetworkEnabled)
+            Toast.makeText(activity, "Please check your GPS and Internet", Toast.LENGTH_SHORT).show();
         else {
             if (isNetworkEnabled) {
                 mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
@@ -275,7 +281,7 @@ public class MapFragmentInteractor implements MapFragmentContract.Interactor, Go
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (showOnlyClicked) {
-            for (Marker extras : markersList){
+            for (Marker extras : markersList) {
                 if (!extras.getId().equals(marker.getId()))
                     extras.setVisible(false);
             }

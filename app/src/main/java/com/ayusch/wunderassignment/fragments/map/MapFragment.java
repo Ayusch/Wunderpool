@@ -81,7 +81,6 @@ public class MapFragment extends BaseFragment implements MapFragmentContract.Vie
         if (catLoadingView != null) {
             catLoadingView.show(getFragmentManager(), "");
         }
-
     }
 
     @Override
