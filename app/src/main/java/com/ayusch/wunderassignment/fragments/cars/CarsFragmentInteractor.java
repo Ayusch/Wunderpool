@@ -77,7 +77,7 @@ public class CarsFragmentInteractor implements CarsFragmentContract.Interactor {
     @Override
     public void showTutorialI(Activity activity, RecyclerView rvCars, View fragmentView) {
         TapTargetView.showFor(activity,                 // `this` is an Activity
-                TapTarget.forView(fragmentView.findViewById(R.id.rv_cars), "Click the dropdown arrow to view full information", "Or click on the Map tab to view a map")
+                TapTarget.forView(fragmentView.findViewById(R.id.rv_cars), "Click the dropdown arrow to view complete information about the car / Click on the maps section to view map", "Designed and developed by Ayusch")
                         // All options below are optional
                         .outerCircleColor(R.color.colorAccent)      // Specify a color for the outer circle
                         .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle

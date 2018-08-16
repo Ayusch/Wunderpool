@@ -202,6 +202,7 @@ public class MapFragmentInteractor implements MapFragmentContract.Interactor, Go
 
     }
 
+    /* ---------------- USER LOCATION TASKS -------------------- */
 
     @Override
     public void setUserLocationI(Activity activity, GoogleMap googleMap) {
@@ -266,16 +267,18 @@ public class MapFragmentInteractor implements MapFragmentContract.Interactor, Go
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 12));
         }
 
-    }
+    }    /* ---------------- USER LOCATION TASKS END -------------------- */
+
 
     private boolean showOnlyClicked = true;
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (showOnlyClicked) {
-            for (Marker extras : markersList)
+            for (Marker extras : markersList){
                 if (!extras.getId().equals(marker.getId()))
                     extras.setVisible(false);
+            }
         } else {
             for (Marker all : markersList) {
                 all.setVisible(true);
@@ -285,7 +288,7 @@ public class MapFragmentInteractor implements MapFragmentContract.Interactor, Go
 
         showOnlyClicked = !showOnlyClicked;
 
-        return false;
+        return true;
     }
 
 
