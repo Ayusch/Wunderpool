@@ -279,6 +279,7 @@ public class MapFragmentInteractor implements MapFragmentContract.Interactor, Go
                 if (!extras.getId().equals(marker.getId()))
                     extras.setVisible(false);
             }
+            marker.showInfoWindow();
         } else {
             for (Marker all : markersList) {
                 all.setVisible(true);
