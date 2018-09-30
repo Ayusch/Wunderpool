@@ -19,6 +19,10 @@ def cat_loader = "1.0.4"
 def play_services = "12.0.1"
 def multidex = "1.0.3"
 def nammu = "1.2.0"
+def junitVersion = '4.12'
+def mockitoVersion = '1.10.19'
+def powerMockito = '1.6.2'
+def hamcrestVersion = '1.3'
 
 
 android {
@@ -103,6 +107,13 @@ dependencies {
 
     //Nammu for permissions
     implementation "com.github.tajchert:nammu:${nammu}"
+
+    // Dependencies for local unit tests
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.mockito:mockito-all:$mockitoVersion"
+    testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
+    testImplementation "org.powermock:powermock-module-junit4:$powerMockito"
+    testImplementation "org.powermock:powermock-api-mockito:$powerMockito"
 
 
 

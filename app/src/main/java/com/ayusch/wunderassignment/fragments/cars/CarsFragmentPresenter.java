@@ -16,7 +16,6 @@ public class CarsFragmentPresenter implements CarsFragmentContract.Presenter {
     public CarsFragmentPresenter(CarsFragmentContract.View view) {
         mInteractor = new CarsFragmentInteractor(this);
         mView = view;
-
     }
 
 
@@ -26,6 +25,7 @@ public class CarsFragmentPresenter implements CarsFragmentContract.Presenter {
             mInteractor.loadCarsI(shouldSaveData);
         else
             mView.showApiErrorV("Please check your internet connection !!");
+
     }
 
     @Override
