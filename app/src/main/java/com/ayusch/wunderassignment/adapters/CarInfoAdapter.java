@@ -23,6 +23,7 @@ public class CarInfoAdapter extends RecyclerView.Adapter<CarInfoAdapter.CarsView
     List<CarsInfoResponse.PlaceMarks> placeMarksList;
     CarClickedListener listener;
     Context context;
+    private RecyclerView recyclerveiw;
 
     public CarInfoAdapter(List<CarsInfoResponse.PlaceMarks> placeMarksList, CarClickedListener listener, Context context) {
         this.placeMarksList = placeMarksList;
@@ -34,20 +35,30 @@ public class CarInfoAdapter extends RecyclerView.Adapter<CarInfoAdapter.CarsView
     @Override
     public CarsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.car_info_item, parent, false);
-        return new CarsViewHolder(view);
+        CarsViewHolder carsViewHolder = new CarsViewHolder(view);
+        return carsViewHolder;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull CarsViewHolder holder, int position) {
 
-        holder.setIsRecyclable(false);
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerveiw = recyclerView;
+    }
+
+
+    @Override
+    public void onBindViewHolder(@NonNull final CarsViewHolder holder, int position) {
+
         final CarsInfoResponse.PlaceMarks placeMarks = placeMarksList.get(position);
 
         holder.expandableCardView.setTitle(placeMarks.getAddress());
+        placeMarks.setExpanded(true);
 
         holder.expandableCardView.setOnExpandedListener(new ExpandableCardView.OnExpandedListener() {
             @Override
             public void onExpandChanged(View view, boolean isExpanded) {
+                placeMarks.setExpanded(true);
                 TextView address = view.findViewById(R.id.car_address);
                 TextView coordinates = view.findViewById(R.id.car_coordinates);
                 TextView engineType = view.findViewById(R.id.car_engineType);

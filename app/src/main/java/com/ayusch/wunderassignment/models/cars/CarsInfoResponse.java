@@ -52,6 +52,16 @@ public class CarsInfoResponse {
         @SerializedName("interior")
         private String interior;
 
+        private Boolean isExpanded = false;
+
+        public Boolean getExpanded() {
+            return isExpanded;
+        }
+
+        public void setExpanded(Boolean expanded) {
+            isExpanded = expanded;
+        }
+
         public void setAddress(String address) {
             this.address = address;
         }
